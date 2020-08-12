@@ -8,7 +8,7 @@ namespace LogstashConsoleApp
         static void Main(string[] args)
         {
             DeleteDocument();
-            DeleteElastic();
+            DeleteElastic();    
         }
 
         private static void DeleteDocument()
@@ -20,9 +20,7 @@ namespace LogstashConsoleApp
                 connection.ConnectionString = connectionString;
 
                 connection.Open();
-                SqlCommand command = new SqlCommand("BEGIN TRAN SELECT 1 FROM [user] WITH (TABLOCKX); WAITFOR DELAY '00:00:5'; delete from [user] where [is_deleted]=1; ROLLBACK TRAN;", connection);
-                command.ExecuteNonQuery();
-                command = new SqlCommand("delete from [user] where [is_deleted]=1", connection);
+                SqlCommand command = new SqlCommand("BEGIN TRAN SELECT 1 FROM [user] WITH (TABLOCKX); WAITFOR DELAY '00:00:15';delete from [user] where [is_deleted]=1; COMMIT TRAN;", connection);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
